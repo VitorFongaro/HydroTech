@@ -3,7 +3,7 @@
 Sistema de monitoramento de consumo de água com ESP32, sensor de fluxo YF-S201,
 dashboard web e persistência em Supabase.
 
-## Visao geral
+## Visão geral
 
 O projeto mede o fluxo de água no ESP32, calcula consumo e custo estimado, envia
 leituras periódicas para uma Supabase Edge Function e exibe os dados em um painel
@@ -42,7 +42,7 @@ web com gráficos e histórico.
 4. A Edge Function valida o token e grava os dados na tabela `consumo_agua`.
 5. O dashboard consulta o Supabase e atualiza os indicadores em tempo real.
 
-## Configuracao do ESP32
+## Configuração do ESP32
 
 Abra `esp32/hidrosmart_esp32.ino` na Arduino IDE ou em outro ambiente compativel
 com ESP32.
@@ -65,7 +65,7 @@ Bibliotecas usadas:
 
 Essas bibliotecas fazem parte do suporte ESP32 para Arduino.
 
-## Configuracao do Supabase
+## Configuração do Supabase
 
 A Edge Function usa variáveis de ambiente para acessar o Supabase:
 
@@ -110,7 +110,7 @@ config.local.js
 Use `config.example.js` como modelo. O arquivo `config.local.js` fica ignorado
 pelo Git.
 
-## Seguranca
+## Segurança
 
 Não suba credenciais reais para o repositório.
 
