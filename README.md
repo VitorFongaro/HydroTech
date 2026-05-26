@@ -158,5 +158,3 @@ Já a `SUPABASE_SERVICE_ROLE_KEY` nunca deve ser exposta:
 * no firmware
 * em arquivos versionados
 * no GitHub
-
-Cada novo commit gera um novo deploy automaticamente.
