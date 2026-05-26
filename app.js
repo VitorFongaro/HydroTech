@@ -1,5 +1,7 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from "./config.local.js";
+
+const SUPABASE_URL = "https://dugcncoovouahoobsrbm.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_th-tu9bzeZmsvKxlAzfASg_fUAdoG2j";
 
 const REFRESH_INTERVAL_MS = 5000;
 const ONLINE_WINDOW_MS = 2 * 60 * 1000;
