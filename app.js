@@ -399,7 +399,7 @@ function renderInsights(readings) {
 
   if (peakHour) {
     els.peakHour.textContent = peakHour.hour;
-    els.peakHourDetail.textContent = `${formatLiters(peakHour.liters)} concentrados neste horario.`;
+    els.peakHourDetail.textContent = `${formatLiters(peakHour.liters)} concentrados neste horário.`;
   } else {
     els.peakHour.textContent = "Sem dados";
     els.peakHourDetail.textContent = "Aguardando leituras do sensor.";
@@ -410,7 +410,7 @@ function renderInsights(readings) {
     els.highestCostDetail.textContent = `${currencyFormatter.format(highestCostDay.cost)} em ${formatLiters(highestCostDay.liters)} consumidos.`;
   } else {
     els.highestCostDay.textContent = "Sem dados";
-    els.highestCostDetail.textContent = "Os custos serao calculados automaticamente.";
+    els.highestCostDetail.textContent = "Os custos serão calculados automaticamente.";
   }
 }
 
@@ -461,7 +461,7 @@ async function carregarDados({ silent = false } = {}) {
   } catch (error) {
     console.error("Erro ao carregar dados:", error);
     renderStatus(state.readings);
-    showToast("Erro ao carregar dados", error.message || "Verifique a conexao com o Supabase.", "error");
+    showToast("Erro ao carregar dados", error.message || "Verifique a conexão com o Supabase.", "error");
   } finally {
     state.firstLoad = false;
     showLoader(false);
