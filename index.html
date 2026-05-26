@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#06111f">
+  <title>HydroTech | Monitoramento IoT de Agua</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Resumo do sistema">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="img">
+            <path d="M12 2.2c3.2 3.7 6.2 7.6 6.2 12a6.2 6.2 0 1 1-12.4 0c0-4.4 3-8.3 6.2-12Z"/>
+            <path d="M9.2 14.5c.4 1.7 1.5 2.7 3.2 2.9"/>
+          </svg>
+        </div>
+        <div>
+          <strong>HydroTech</strong>
+          <span>Industrial Water IoT</span>
+        </div>
+      </div>
+
+      <div class="system-panel">
+        <div class="status-card">
+          <span class="label">Status do sistema</span>
+          <div class="status-row">
+            <span id="statusDot" class="status-dot offline" aria-hidden="true"></span>
+            <strong id="systemStatus">OFFLINE</strong>
+          </div>
+        </div>
+
+        <div class="clock-card">
+          <span class="label">Relogio</span>
+          <strong id="clock">--:--:--</strong>
+          <small id="dateLabel">Carregando data</small>
+        </div>
+      </div>
+
+      <nav class="quick-nav" aria-label="Indicadores">
+        <a href="#indicadores">Indicadores</a>
+        <a href="#graficos">Graficos</a>
+        <a href="#analises">Analises</a>
+        <a href="#historico">Historico</a>
+      </nav>
+    </aside>
+
+    <main class="dashboard">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">Monitoramento em tempo real</p>
+          <h1>Consumo de agua inteligente conectado ao ESP32</h1>
+          <p class="hero-copy">Acompanhe volume, custo, fluxo e padroes de consumo com atualizacoes automaticas via Supabase Realtime.</p>
+        </div>
+        <div class="hero-actions">
+          <button id="refreshButton" class="icon-button" type="button" aria-label="Atualizar dados">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 12a9 9 0 0 1-15.4 6.4M3 12a9 9 0 0 1 15.4-6.4"/>
+              <path d="M21 4v6h-6M3 20v-6h6"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <section id="indicadores" class="metrics-grid" aria-label="Indicadores principais">
+        <article class="metric-card accent-cyan">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M7 15h10"/><path d="M12 3C9.2 6.3 7 9.4 7 12.4a5 5 0 0 0 10 0C17 9.4 14.8 6.3 12 3Z"/></svg>
+          </div>
+          <span>Consumo total</span>
+          <strong id="totalLiters">0 L</strong>
+          <small>Volume acumulado</small>
+        </article>
+
+        <article class="metric-card accent-green">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 2v20"/><path d="M17 5.5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <span>Custo total</span>
+          <strong id="totalCost">R$ 0,00</strong>
+          <small>Gasto estimado</small>
+        </article>
+
+        <article class="metric-card accent-blue">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 12h4l2-7 4 14 2-7h4"/></svg>
+          </div>
+          <span>Fluxo atual</span>
+          <strong id="currentFlow">0 L/min</strong>
+          <small>Ultima leitura recebida</small>
+        </article>
+
+        <article class="metric-card accent-orange">
+          <div class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+          <span>Tempo ligado</span>
+          <strong id="uptime">0s</strong>
+          <small>Soma operacional</small>
+        </article>
+      </section>
+
+      <section id="graficos" class="charts-grid" aria-label="Graficos de consumo">
+        <article class="panel chart-panel wide">
+          <div class="panel-header">
+            <div>
+              <span class="label">Ultimas 24h</span>
+              <h2>Consumo por hora</h2>
+            </div>
+            <span class="chip">Linha suave</span>
+          </div>
+          <div class="chart-box"><canvas id="chart24h"></canvas></div>
+        </article>
+
+        <article class="panel chart-panel">
+          <div class="panel-header">
+            <div>
+              <span class="label">7 dias</span>
+              <h2>Consumo diario</h2>
+            </div>
+            <span class="chip">Barras</span>
+          </div>
+          <div class="chart-box"><canvas id="chart7d"></canvas></div>
+        </article>
+
+        <article class="panel chart-panel">
+          <div class="panel-header">
+            <div>
+              <span class="label">30 dias</span>
+              <h2>Tendencia</h2>
+            </div>
+            <span class="chip">Area</span>
+          </div>
+          <div class="chart-box"><canvas id="chart30d"></canvas></div>
+        </article>
+      </section>
+
+      <section id="analises" class="insights-grid" aria-label="Analises automaticas">
+        <article class="panel insight-card">
+          <span class="label">Pico operacional</span>
+          <h2>Maior horario de consumo</h2>
+          <strong id="peakHour">Sem dados</strong>
+          <p id="peakHourDetail">Aguardando leituras do sensor.</p>
+        </article>
+
+        <article class="panel insight-card">
+          <span class="label">Maior gasto</span>
+          <h2>Dia com maior custo</h2>
+          <strong id="highestCostDay">Sem dados</strong>
+          <p id="highestCostDetail">Os custos serao calculados automaticamente.</p>
+        </article>
+      </section>
+
+      <section id="historico" class="panel history-panel" aria-label="Historico de registros">
+        <div class="panel-header">
+          <div>
+            <span class="label">Historico</span>
+            <h2>Ultimos registros</h2>
+          </div>
+          <span id="lastUpdate" class="chip">Sem atualizacao</span>
+        </div>
+
+        <div id="emptyState" class="empty-state hidden">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3C8.8 6.7 6 10.5 6 14a6 6 0 0 0 12 0c0-3.5-2.8-7.3-6-11Z"/>
+            <path d="M9.5 14.8c.4 1.3 1.3 2 2.7 2.2"/>
+          </svg>
+          <h3>Nenhuma leitura encontrada</h3>
+          <p>Quando o ESP32 enviar dados para o Supabase, eles aparecerao aqui automaticamente.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Litros</th>
+                <th>Custo</th>
+                <th>Fluxo</th>
+                <th>Tempo ligado</th>
+              </tr>
+            </thead>
+            <tbody id="historyBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="loader" class="loader-overlay" aria-live="polite">
+    <div class="loader-card">
+      <div class="spinner" aria-hidden="true"></div>
+      <strong>Sincronizando sensores</strong>
+      <span>Buscando leituras no Supabase...</span>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
