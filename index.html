@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#06111f">
-  <title>HydroTech | Monitoramento IoT de Agua</title>
+  <title>HydroTech | Monitoramento IoT de Água</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@
         </div>
         <div>
           <strong>HydroTech</strong>
-          <span>Industrial Water IoT</span>
+          <span>Water IoT</span>
         </div>
       </div>
 
@@ -45,9 +45,9 @@
 
       <nav class="quick-nav" aria-label="Indicadores">
         <a href="#indicadores">Indicadores</a>
-        <a href="#graficos">Graficos</a>
-        <a href="#analises">Analises</a>
-        <a href="#historico">Historico</a>
+        <a href="#graficos">Gráficos</a>
+        <a href="#analises">Análises</a>
+        <a href="#historico">Histórico</a>
       </nav>
     </aside>
 
@@ -55,8 +55,8 @@
       <header class="hero">
         <div>
           <p class="eyebrow">Monitoramento em tempo real</p>
-          <h1>Consumo de agua inteligente conectado ao ESP32</h1>
-          <p class="hero-copy">Acompanhe volume, custo, fluxo e padroes de consumo com atualizacoes automaticas via Supabase Realtime.</p>
+          <h1>Consumo de água inteligente conectado ao ESP32</h1>
+          <p class="hero-copy">Acompanhe volume, custo, fluxo e padrões de consumo com atualizações automáticas via Supabase Realtime.</p>
         </div>
         <div class="hero-actions">
           <button id="refreshButton" class="icon-button" type="button" aria-label="Atualizar dados">
@@ -93,7 +93,7 @@
           </div>
           <span>Fluxo atual</span>
           <strong id="currentFlow">0 L/min</strong>
-          <small>Ultima leitura recebida</small>
+          <small>Última leitura recebida</small>
         </article>
 
         <article class="metric-card accent-orange">
@@ -110,7 +110,7 @@
         <article class="panel chart-panel wide">
           <div class="panel-header">
             <div>
-              <span class="label">Ultimas 24h</span>
+              <span class="label">Últimas 24h</span>
               <h2>Consumo por hora</h2>
             </div>
             <span class="chip">Linha suave</span>
@@ -122,7 +122,7 @@
           <div class="panel-header">
             <div>
               <span class="label">7 dias</span>
-              <h2>Consumo diario</h2>
+              <h2>Consumo diário</h2>
             </div>
             <span class="chip">Barras</span>
           </div>
@@ -133,7 +133,7 @@
           <div class="panel-header">
             <div>
               <span class="label">30 dias</span>
-              <h2>Tendencia</h2>
+              <h2>Tendência</h2>
             </div>
             <span class="chip">Area</span>
           </div>
@@ -144,7 +144,7 @@
       <section id="analises" class="insights-grid" aria-label="Analises automaticas">
         <article class="panel insight-card">
           <span class="label">Pico operacional</span>
-          <h2>Maior horario de consumo</h2>
+          <h2>Maior horário de consumo</h2>
           <strong id="peakHour">Sem dados</strong>
           <p id="peakHourDetail">Aguardando leituras do sensor.</p>
         </article>
@@ -153,7 +153,7 @@
           <span class="label">Maior gasto</span>
           <h2>Dia com maior custo</h2>
           <strong id="highestCostDay">Sem dados</strong>
-          <p id="highestCostDetail">Os custos serao calculados automaticamente.</p>
+          <p id="highestCostDetail">Os custos serão calculados automaticamente.</p>
         </article>
       </section>
 
@@ -163,7 +163,7 @@
             <span class="label">Historico</span>
             <h2>Ultimos registros</h2>
           </div>
-          <span id="lastUpdate" class="chip">Sem atualizacao</span>
+          <span id="lastUpdate" class="chip">Sem atualização</span>
         </div>
 
         <div id="emptyState" class="empty-state hidden">
@@ -172,7 +172,7 @@
             <path d="M9.5 14.8c.4 1.3 1.3 2 2.7 2.2"/>
           </svg>
           <h3>Nenhuma leitura encontrada</h3>
-          <p>Quando o ESP32 enviar dados para o Supabase, eles aparecerao aqui automaticamente.</p>
+          <p>Quando o ESP32 enviar dados para o Supabase, eles aparecerão aqui automaticamente.</p>
         </div>
 
         <div class="table-wrap">
