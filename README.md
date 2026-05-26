@@ -7,14 +7,13 @@ dashboard web e persistência em Supabase.
 
 O projeto mede o fluxo de água no ESP32, calcula consumo e custo estimado, envia
 leituras periódicas para uma Supabase Edge Function e exibe os dados em um painel
-web com gráficos e histórico.
+web com gráficos e histórico em tempo real.
 
 ## Estrutura do projeto
 
 ```text
 .
-|-- app.js                         # Logica do dashboard e integração com Supabase
-|-- config.example.js              # Exemplo de configuração publica do dashboard
+|-- app.js                         # Dashboard e integração com Supabase
 |-- index.html                     # Interface principal
 |-- style.css                      # Estilos do dashboard
 |-- esp32/
@@ -28,11 +27,11 @@ web com gráficos e histórico.
 
 ## Componentes
 
-- ESP32
-- Sensor de fluxo YF-S201 ligado ao pino GPIO 27
-- Rede Wi-Fi com acesso a internet
-- Projeto Supabase com tabela `consumo_agua`
-- Supabase Edge Function publicada em `/functions/v1/consumo`
+* ESP32
+* Sensor de fluxo YF-S201 ligado ao GPIO 27
+* Rede Wi-Fi com acesso à internet
+* Projeto Supabase com tabela `consumo_agua`
+* Supabase Edge Function publicada em `/functions/v1/consumo`
 
 ## Fluxo de dados
 
@@ -44,30 +43,40 @@ web com gráficos e histórico.
 
 ## Configuração do ESP32
 
-Abra `esp32/hidrosmart_esp32.ino` na Arduino IDE ou em outro ambiente compativel
-com ESP32.
+Abra:
 
-Antes de gravar a placa, ajuste:
+```text
+esp32/hidrosmart_esp32.ino
+```
+
+na Arduino IDE ou em outro ambiente compatível com ESP32.
+
+Antes de gravar a placa, configure:
 
 ```text
 esp32/config.local.h
 ```
 
-Use `esp32/config.example.h` como modelo. O arquivo `config.local.h` fica
-ignorado pelo Git para evitar o envio de senha do Wi-Fi, token do dispositivo e
-URL privada de ambiente.
+Use `esp32/config.example.h` como modelo.
 
-Bibliotecas usadas:
+O arquivo `config.local.h` fica ignorado pelo Git para evitar o envio de:
 
-- `WiFi.h`
-- `WebServer.h`
-- `HTTPClient.h`
+* senha do Wi-Fi
+* token do dispositivo
+* URLs privadas
+* chaves secretas
+
+### Bibliotecas utilizadas
+
+* `WiFi.h`
+* `WebServer.h`
+* `HTTPClient.h`
 
 Essas bibliotecas fazem parte do suporte ESP32 para Arduino.
 
 ## Configuração do Supabase
 
-A Edge Function usa variáveis de ambiente para acessar o Supabase:
+A Edge Function utiliza variáveis de ambiente privadas:
 
 ```text
 SUPABASE_URL
@@ -75,9 +84,9 @@ SUPABASE_SERVICE_ROLE_KEY
 ```
 
 Configure essas variáveis no painel do Supabase ou via CLI antes de publicar a
-funcao.
+função.
 
-Exemplo de tabela esperada:
+### Exemplo de tabela
 
 ```sql
 create table consumo_agua (
@@ -92,54 +101,62 @@ create table consumo_agua (
 
 ## Dashboard
 
-O dashboard e uma aplicação web estática. Para testar localmente, abra
-`index.html` no navegador ou sirva a pasta com um servidor HTTP simples.
+O dashboard é uma aplicação web estática feita com:
 
-Ele usa:
+* HTML
+* CSS
+* JavaScript puro
+* Supabase JS via CDN
+* Chart.js via CDN
 
-- Supabase JS via CDN
-- Chart.js via CDN
-- HTML, CSS e JavaScript puros
-
-Crie o arquivo local de configuracao do dashboard:
+Para executar localmente:
 
 ```text
-config.local.js
+Abra index.html no navegador
 ```
 
-Use `config.example.js` como modelo. O arquivo `config.local.js` fica ignorado
-pelo Git.
+ou utilize um servidor HTTP simples.
+
+## Configuração do dashboard
+
+As credenciais públicas do Supabase ficam diretamente no arquivo:
+
+```text
+app.js
+```
+
+Exemplo:
+
+```js
+const SUPABASE_URL = "https://seu-projeto.supabase.co";
+
+const SUPABASE_ANON_KEY = "sua-anon-key";
+```
+
+A `SUPABASE_ANON_KEY` é pública e pode ser utilizada no frontend quando as
+políticas de RLS estiverem configuradas corretamente.
 
 ## Segurança
 
-Não suba credenciais reais para o repositório.
+Nunca envie credenciais privadas para o repositório.
 
-Informações que devem ficar fora do Git:
+Informações que devem permanecer fora do Git:
 
-- Senha do Wi-Fi
-- `SUPABASE_SERVICE_ROLE_KEY`
-- Tokens privados de dispositivo
-- Arquivos `.env`
-- Dumps de banco
-- Builds e caches locais
+* senha do Wi-Fi
+* `SUPABASE_SERVICE_ROLE_KEY`
+* tokens privados
+* arquivos `.env`
+* dumps de banco
+* caches locais
+* builds temporários
 
-Observação: a chave anônima/publicavel do Supabase pode aparecer no frontend
-quando as politicas de RLS estiverem configuradas corretamente. Já a service role
-key nunca deve ser exposta no navegador, no firmware ou em arquivos versionados.
+A `SUPABASE_ANON_KEY` pode ficar pública no frontend.
 
-## Git ignore
+Já a `SUPABASE_SERVICE_ROLE_KEY` nunca deve ser exposta:
 
-Este repositorio inclui um `.gitignore` para evitar o envio de segredos, caches,
-builds locais e arquivos temporarios de IDE.
+* no navegador
+* no firmware
+* em arquivos versionados
+* no GitHub
 
-Se precisar manter configuracoes locais, prefira nomes como:
-
-```text
-.env
-.env.local
-secrets.h
-config.local.h
-config.local.js
-```
-
-Esses arquivos já estão ignorados.
+Cada novo commit gera um novo deploy automaticamente.
